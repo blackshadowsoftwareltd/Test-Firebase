@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "601333767564",
+    "project_id": "wallpaper-76958",
+    "storage_bucket": "wallpaper-76958.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601333767564:android:02c85cd3161b014eefcaa9",
+        "android_client_info": {
+          "package_name": "com.blackshadowsoftware.ktmwallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601333767564-4a6itsepgnv94553ldih5o5mada6m2q6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blackshadowsoftware.ktmwallpaper",
+            "certificate_hash": "a5874ff54a9d93a87c77e674fd8030962cb4003f"
+          }
+        },
+        {
+          "client_id": "601333767564-6cdbl8rff7h814qj046t2r1fvvi8p7pa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOp23nZr9kwDK3riSqhhKJlVIOla7gDjE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601333767564-6cdbl8rff7h814qj046t2r1fvvi8p7pa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-7623473266641534~6037335678"
+    }
+  ],
+  "configuration_version": "1"
+}
