@@ -1,6 +1,14 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+// Import the generated file
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  DartPluginRegistrant.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
