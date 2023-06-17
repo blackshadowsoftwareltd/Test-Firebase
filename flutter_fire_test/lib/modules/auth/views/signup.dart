@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
 import 'package:flutter_fire_test/modules/auth/providers/provider.dart';
+import 'package:flutter_fire_test/modules/home/providers/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignupScreen extends ConsumerWidget {
@@ -9,6 +10,7 @@ class SignupScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(userStreamProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Signup Screen')),
       body: Padding(
@@ -38,7 +40,7 @@ class SignupScreen extends ConsumerWidget {
               onPressed: () async {
                 await signup(ref);
               },
-              child: Text('Signup'),
+              child: const Text('Signup'),
             )
           ],
         ),

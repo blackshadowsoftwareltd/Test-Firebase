@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
+import 'package:flutter_fire_test/modules/auth/models/user.dart';
 import 'package:flutter_fire_test/modules/home/providers/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +15,10 @@ Future<bool> signup(WidgetRef ref) async {
       password: ref.watch(txtEdtngCtrlProvider('Sign up Pass')).text,
     );
     log(credential.user?.uid.toString() ?? 'No UID');
+
+    await saveUserInfoAfterSignup(ref);
+    await FirebaseAuth.instance.currentUser
+        ?.reload(); //? to update the user stream (must need to reload)
     ref.invalidate(userStreamProvider);
     return true;
   } on FirebaseAuthException catch (e) {
@@ -24,6 +30,41 @@ Future<bool> signup(WidgetRef ref) async {
     return false;
   } catch (e) {
     log(e.toString());
+    return false;
+  }
+}
+
+Future<void> signout(WidgetRef ref) async {
+  FirebaseAuth.instance.signOut();
+  ref.invalidate(userStreamProvider);
+}
+
+Future<bool> saveUserInfoAfterSignup(WidgetRef ref) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return false;
+    log(' id : ${user.uid}');
+    final name = ref.read(txtEdtngCtrlProvider('Sign up Name')).text;
+    final info = LocalUserInfo(name: name, uid: user.uid);
+    final userCollection = FirebaseFirestore.instance
+        .collection('UsersInFo')
+        .doc(user.uid)
+        .withConverter<LocalUserInfo>(
+          fromFirestore: (snapshot, _) =>
+              LocalUserInfo.fromMap(snapshot.data()!),
+          toFirestore: (user, _) => user.toMap(),
+        );
+
+    final success = userCollection.set(info).then((value) {
+      log('User Saved in DB');
+      return true;
+    }).catchError((e) {
+      log(e.toString());
+      return false;
+    });
+    print(success);
+    return success;
+  } catch (e) {
     return false;
   }
 }
