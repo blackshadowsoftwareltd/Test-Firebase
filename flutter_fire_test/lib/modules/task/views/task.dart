@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
+import 'package:flutter_fire_test/modules/task/providers/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TaskScreen extends ConsumerWidget {
@@ -20,7 +21,9 @@ class TaskScreen extends ConsumerWidget {
               controller: ref.watch(txtEdtngCtrlProvider('task')),
             ),
           ),
-          MaterialButton(child: const Text('Add Task'), onPressed: () async {}),
+          MaterialButton(
+              child: const Text('Add Task'),
+              onPressed: () async => await addTask(ref)),
         ],
       ),
     );
