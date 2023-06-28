@@ -17,11 +17,12 @@ Future<bool> addTask(WidgetRef ref) async {
         .collection('UsersInFo')
         .doc(user.uid)
         .collection('Tasks')
+        .doc(task.id)
         .withConverter<Task>(
           fromFirestore: (snapshot, _) => Task.fromMap(snapshot.data()!),
           toFirestore: (user, _) => user.toMap(),
         );
-    final success = await taskCollection.add(task).then((value) {
+    final success = await taskCollection.set(task).then((value) {
       log('Data Saved in DB');
       return true;
     }).catchError((e) {
@@ -33,6 +34,22 @@ Future<bool> addTask(WidgetRef ref) async {
   } catch (e) {
     return false;
   }
+}
+
+Future<bool> deleteTask(String id) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) return false;
+  return await FirebaseFirestore.instance
+      .collection('UsersInFo')
+      .doc(user.uid)
+      .collection('Tasks')
+      .doc(id)
+      .delete()
+      .then((value) => true)
+      .catchError((error) {
+    log("Failed to delete user: $error");
+    return false;
+  });
 }
 
 final tasksProvider = StreamProvider<QuerySnapshot<Task>>((ref) {

@@ -48,10 +48,12 @@ class _Tasks extends ConsumerWidget {
             itemCount: list.length,
             itemBuilder: (context, index) => CupertinoListTile(
               trailing: CupertinoButton(
-                  onPressed: () {}, child: const Icon(Icons.delete)),
+                  onPressed: () async =>
+                      await deleteTask(list[index].data().id),
+                  child: const Icon(Icons.delete)),
               onTap: () {},
               title: Text(list[index].data().task),
-              subtitle: Text(list[index].data().id),
+              subtitle: Text('ID: ${list[index].data().id}'),
             ),
           );
         },
