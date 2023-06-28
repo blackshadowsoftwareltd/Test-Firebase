@@ -34,3 +34,17 @@ Future<bool> addTask(WidgetRef ref) async {
     return false;
   }
 }
+
+final tasksProvider = StreamProvider<QuerySnapshot<Task>>((ref) {
+  final user = FirebaseAuth.instance.currentUser;
+
+  return FirebaseFirestore.instance
+      .collection('UsersInFo')
+      .doc(user?.uid)
+      .collection('Tasks')
+      .withConverter<Task>(
+        fromFirestore: (snapshot, _) => Task.fromMap(snapshot.data()!),
+        toFirestore: (user, _) => user.toMap(),
+      )
+      .snapshots();
+});

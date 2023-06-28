@@ -30,23 +30,31 @@ class TaskScreen extends ConsumerWidget {
   }
 }
 
-class _Tasks extends StatelessWidget {
+class _Tasks extends ConsumerWidget {
   const _Tasks({
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tasksData = ref.watch(tasksProvider);
     return Expanded(
-      child: ListView.builder(
-        itemCount: 100,
-        itemBuilder: (context, index) => CupertinoListTile(
-          trailing: CupertinoButton(
-              onPressed: () {}, child: const Icon(Icons.delete)),
-          onTap: () {},
-          title: const Text('Tile'),
-          subtitle: Text(index.toString()),
-        ),
+      child: tasksData.when(
+        loading: () => const CircularProgressIndicator(),
+        error: (e, _) => Text(e.toString()),
+        data: (data) {
+          final list = data.docs;
+          return ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) => CupertinoListTile(
+              trailing: CupertinoButton(
+                  onPressed: () {}, child: const Icon(Icons.delete)),
+              onTap: () {},
+              title: Text(list[index].data().task),
+              subtitle: Text(list[index].data().id),
+            ),
+          );
+        },
       ),
     );
   }
