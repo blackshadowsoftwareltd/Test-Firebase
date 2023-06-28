@@ -6,6 +6,37 @@ import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
 import 'package:flutter_fire_test/modules/task/models/task.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final tasksProvider = StreamProvider<QuerySnapshot<Task>>((ref) {
+  final user = FirebaseAuth.instance.currentUser;
+
+  return FirebaseFirestore.instance
+      .collection('UsersInFo')
+      .doc(user?.uid)
+      .collection('Tasks')
+      .withConverter<Task>(
+        fromFirestore: (snapshot, _) => Task.fromMap(snapshot.data()!),
+        toFirestore: (user, _) => user.toMap(),
+      )
+      .snapshots();
+});
+
+final selectedTaskProvider =
+    NotifierProvider<_SelectedUpdate, Task?>(_SelectedUpdate.new);
+
+class _SelectedUpdate extends Notifier<Task?> {
+  @override
+  Task? build() => null;
+  void update(Task t) {
+    if (state == t) {
+      ref.read(txtEdtngCtrlProvider('task')).clear();
+      state = null;
+    } else {
+      ref.read(txtEdtngCtrlProvider('task')).text = t.task;
+      state = t;
+    }
+  }
+}
+
 Future<bool> addTask(WidgetRef ref) async {
   try {
     final user = FirebaseAuth.instance.currentUser;
@@ -23,7 +54,41 @@ Future<bool> addTask(WidgetRef ref) async {
           toFirestore: (user, _) => user.toMap(),
         );
     final success = await taskCollection.set(task).then((value) {
+      ref.read(txtEdtngCtrlProvider('task')).clear();
       log('Data Saved in DB');
+      return true;
+    }).catchError((e) {
+      log(e.toString());
+      return false;
+    });
+    log(success.toString());
+    return success;
+  } catch (e) {
+    return false;
+  }
+}
+
+Future<bool> updateTask(WidgetRef ref) async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    final task = ref.read(selectedTaskProvider);
+    if (user == null || task == null) return false;
+    final taskTxt = ref.read(txtEdtngCtrlProvider('task')).text;
+
+    final taskCollection = FirebaseFirestore.instance
+        .collection('UsersInFo')
+        .doc(user.uid)
+        .collection('Tasks')
+        .doc(task.id)
+        .withConverter<Task>(
+          fromFirestore: (snapshot, _) => Task.fromMap(snapshot.data()!),
+          toFirestore: (user, _) => user.toMap(),
+        );
+    final success = await taskCollection
+        .update(task.copyWith(task: taskTxt).toMap())
+        .then((value) {
+      log('Data Update in DB');
+      ref.read(selectedTaskProvider.notifier).update(task);
       return true;
     }).catchError((e) {
       log(e.toString());
@@ -51,17 +116,3 @@ Future<bool> deleteTask(String id) async {
     return false;
   });
 }
-
-final tasksProvider = StreamProvider<QuerySnapshot<Task>>((ref) {
-  final user = FirebaseAuth.instance.currentUser;
-
-  return FirebaseFirestore.instance
-      .collection('UsersInFo')
-      .doc(user?.uid)
-      .collection('Tasks')
-      .withConverter<Task>(
-        fromFirestore: (snapshot, _) => Task.fromMap(snapshot.data()!),
-        toFirestore: (user, _) => user.toMap(),
-      )
-      .snapshots();
-});

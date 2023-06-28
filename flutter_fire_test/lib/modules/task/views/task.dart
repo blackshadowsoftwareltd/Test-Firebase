@@ -9,6 +9,7 @@ class TaskScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTile = ref.watch(selectedTaskProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Task')),
       body: Column(
@@ -22,8 +23,10 @@ class TaskScreen extends ConsumerWidget {
             ),
           ),
           MaterialButton(
-              child: const Text('Add Task'),
-              onPressed: () async => await addTask(ref)),
+              child: Text(selectedTile == null ? 'Add Task' : 'Update Task'),
+              onPressed: () async => selectedTile == null
+                  ? await addTask(ref)
+                  : await updateTask(ref)),
         ],
       ),
     );
@@ -38,6 +41,7 @@ class _Tasks extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tasksData = ref.watch(tasksProvider);
+    final selectedTile = ref.watch(selectedTaskProvider);
     return Expanded(
       child: tasksData.when(
         loading: () => const CircularProgressIndicator(),
@@ -47,10 +51,21 @@ class _Tasks extends ConsumerWidget {
           return ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) => CupertinoListTile(
-              trailing: CupertinoButton(
-                  onPressed: () async =>
-                      await deleteTask(list[index].data().id),
-                  child: const Icon(Icons.delete)),
+              trailing: Row(
+                children: [
+                  CupertinoButton(
+                      onPressed: () async => ref
+                          .watch(selectedTaskProvider.notifier)
+                          .update(list[index].data()),
+                      child: Icon(selectedTile == list[index].data()
+                          ? Icons.remove
+                          : Icons.edit)),
+                  CupertinoButton(
+                      onPressed: () async =>
+                          await deleteTask(list[index].data().id),
+                      child: const Icon(Icons.delete)),
+                ],
+              ),
               onTap: () {},
               title: Text(list[index].data().task),
               subtitle: Text('ID: ${list[index].data().id}'),
