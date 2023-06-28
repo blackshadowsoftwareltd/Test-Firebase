@@ -4,6 +4,8 @@ import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
 import 'package:flutter_fire_test/modules/auth/views/signup.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/provider.dart';
+
 class SigninScreen extends ConsumerWidget {
   const SigninScreen({super.key});
 
@@ -33,7 +35,11 @@ class SigninScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await signin(
+                        ref.read(txtEdtngCtrlProvider('Sign In Email')).text,
+                        ref.watch(txtEdtngCtrlProvider('Sign In Pass')).text);
+                  },
                   child: const Text('Signin'),
                 ),
                 MaterialButton(

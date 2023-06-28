@@ -55,16 +55,31 @@ Future<bool> saveUserInfoAfterSignup(WidgetRef ref) async {
           toFirestore: (user, _) => user.toMap(),
         );
 
-    final success = userCollection.set(info).then((value) {
+    final success = await userCollection.set(info).then((value) {
       log('User Saved in DB');
       return true;
     }).catchError((e) {
       log(e.toString());
       return false;
     });
-    print(success);
+    log(success.toString());
     return success;
   } catch (e) {
     return false;
   }
+}
+
+Future<User?> signin(String email, String password) async {
+  try {
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    return credential.user;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      log('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      log('Wrong password provided for that user.');
+    }
+  }
+  return null;
 }

@@ -11,26 +11,26 @@ class StartApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final userData = ref.watch(userStreamProvider);
-    // return userData.when(
-    //   loading: () => const Center(
-    //     child: CircularProgressIndicator(),
-    //   ),
-    //   error: (e, _) => Center(
-    //     child: Text('Error $e'),
-    //   ),
-    //   data: (data) {
-    //     print(data?.uid);
-    //     if (data != null) return const HomeScreen();
-    //     return const SigninScreen();
-    //   },
-    // );
-    return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: ((context, snapshot) {
-          print(snapshot.data?.uid);
-          if (snapshot.data?.uid != null) return const HomeScreen();
-          return const SigninScreen();
-        }));
+    final userData = ref.watch(userStreamProvider);
+    return userData.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (e, _) => Center(
+        child: Text('Error $e'),
+      ),
+      data: (data) {
+        print(data?.uid);
+        if (data != null) return const HomeScreen();
+        return const SigninScreen();
+      },
+    );
+    // return StreamBuilder<User?>(
+    //     stream: FirebaseAuth.instance.authStateChanges(),
+    //     builder: ((context, snapshot) {
+    //       print(snapshot.data?.uid);
+    //       if (snapshot.data?.uid != null) return const HomeScreen();
+    //       return const SigninScreen();
+    //     }));
   }
 }
