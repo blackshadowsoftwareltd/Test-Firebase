@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_test/modules/task/views/task.dart';
 import '/modules/auth/providers/provider.dart' show signout;
 import '/modules/home/providers/provider.dart' show profileInfoProvider;
 import 'package:flutter_riverpod/flutter_riverpod.dart'
@@ -18,10 +20,20 @@ class HomeScreen extends ConsumerWidget {
               icon: const Icon(Icons.logout_outlined))
         ],
       ),
-      body: const Column(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _UserInfo(),
-          Text('Home'),
+          const _UserInfo(),
+          const Text('Home'),
+          CupertinoButton(
+            child: const Text('Tasks Screenz'),
+            onPressed: () => Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const TaskScreen(),
+              ),
+            ),
+          ),
         ],
       ),
     );
