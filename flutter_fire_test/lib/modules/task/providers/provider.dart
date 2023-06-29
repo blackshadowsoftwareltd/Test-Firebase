@@ -1,10 +1,12 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
-import 'package:flutter_fire_test/modules/task/models/task.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'
+    show FirebaseFirestore, QuerySnapshot;
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import '/helpers/controllers/txt_edtng.dart' show txtEdtngCtrlProvider;
+import '/modules/task/models/task.dart' show Task;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show Notifier, NotifierProvider, StreamProvider, WidgetRef;
 
 final tasksProvider = StreamProvider<QuerySnapshot<Task>>((ref) {
   final user = FirebaseAuth.instance.currentUser;

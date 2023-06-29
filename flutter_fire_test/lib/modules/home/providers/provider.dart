@@ -1,11 +1,12 @@
-import 'dart:async';
-import 'dart:developer';
+import 'dart:async' show FutureOr;
+import 'dart:developer' show log;
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
-import 'package:flutter_fire_test/modules/auth/models/user.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, User;
+import '/helpers/controllers/txt_edtng.dart' show txtEdtngCtrlProvider;
+import '/modules/auth/models/user.dart' show LocalUserInfo;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show AsyncNotifier, AsyncNotifierProvider, StreamProvider, WidgetRef;
 
 /*
 final userStreamProvider = StreamProvider<User?>((ref) {

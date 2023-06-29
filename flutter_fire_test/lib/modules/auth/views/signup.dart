@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' show CupertinoTextField;
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
-import 'package:flutter_fire_test/modules/auth/providers/provider.dart';
-import 'package:flutter_fire_test/modules/home/providers/provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/helpers/controllers/txt_edtng.dart' show txtEdtngCtrlProvider;
+import '/modules/auth/providers/provider.dart' show signup;
+import '/modules/home/providers/provider.dart' show userStreamProvider;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerWidget, WidgetRef;
 
 class SignupScreen extends ConsumerWidget {
   const SignupScreen({super.key});

@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart'
+    show CupertinoPageRoute, CupertinoTextField;
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
-import 'package:flutter_fire_test/modules/auth/views/signup.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/helpers/controllers/txt_edtng.dart' show txtEdtngCtrlProvider;
+import '/modules/auth/views/signup.dart' show SignupScreen;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show ConsumerWidget, WidgetRef;
 
-import '../providers/provider.dart';
+import '../providers/provider.dart' show signin;
 
 class SigninScreen extends ConsumerWidget {
   const SigninScreen({super.key});

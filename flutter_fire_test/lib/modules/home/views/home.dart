@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_test/modules/auth/providers/provider.dart';
-import 'package:flutter_fire_test/modules/home/providers/provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/modules/auth/providers/provider.dart' show signout;
+import '/modules/home/providers/provider.dart' show profileInfoProvider;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show AsyncValueX, ConsumerWidget, WidgetRef;
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

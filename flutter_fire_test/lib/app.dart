@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_test/modules/auth/views/signin.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '/modules/auth/views/signin.dart' show SigninScreen;
+import 'package:flutter_riverpod/flutter_riverpod.dart'
+    show AsyncValueX, ConsumerWidget, WidgetRef;
 
-import 'modules/home/providers/provider.dart';
-import 'modules/home/views/home.dart';
+import 'modules/home/providers/provider.dart' show userStreamProvider;
+import 'modules/home/views/home.dart' show HomeScreen;
 
 class StartApp extends ConsumerWidget {
   const StartApp({super.key});

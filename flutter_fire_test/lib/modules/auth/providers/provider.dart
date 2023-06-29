@@ -1,9 +1,11 @@
-import 'dart:developer';
+import 'dart:developer' show log;
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_fire_test/helpers/controllers/txt_edtng.dart';
-import 'package:flutter_fire_test/modules/home/providers/provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart'
+    show FirebaseAuth, FirebaseAuthException, User;
+import '/helpers/controllers/txt_edtng.dart' show txtEdtngCtrlProvider;
+import '/modules/home/providers/provider.dart'
+    show saveUserInfoAfterSignup, userStreamProvider;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show WidgetRef;
 
 Future<bool> signup(WidgetRef ref) async {
   try {
